@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="save"></string>
+    <string name="delete"></string>
+    <string name="back"></string>
+    <string name="next"></string>
+    <string name="paint"></string>
+    <string name="edit"></string>
+    <string name="clear"></string>
+    <string name="编辑"></string>
+    <string name="删除"></string>
+
 </resources>

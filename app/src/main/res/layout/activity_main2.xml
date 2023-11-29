@@ -1,0 +1,144 @@
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/paint"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/paint_border"
+                android:contentDescription="paint"
+                app:srcCompat="@drawable/pencil"
+                tools:ignore="HardcodedText" />
+
+            <ImageButton
+                android:id="@+id/eraser"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                app:srcCompat="@drawable/ic_menu_slideshow"
+                android:background="@drawable/paint_border"
+                android:contentDescription="eraser"
+                tools:ignore="HardcodedText" />
+
+            <ImageButton
+                android:id="@+id/clear"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                app:srcCompat="@drawable/ic_menu_slideshow"
+                android:background="@drawable/paint_border"
+                android:contentDescription="clear"
+                tools:ignore="HardcodedText" />
+
+            <ImageButton
+                android:id="@+id/save"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/paint_border"
+                android:contentDescription="save"
+                app:srcCompat="@android:drawable/ic_media_rew"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/FrameDrawView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="InvalidId">
+
+            <com.AndroidStudio.kkk1.DrawView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:background="@color/white"
+                tools:ignore="MissingClass,MissingConstraints,ObsoleteLayoutParam" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/white"
+            android:background="@drawable/paint_border"
+            android:contentDescription="back"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="20dp"
+            app:srcCompat="?android:attr/textSelectHandleRight"
+            tools:ignore="HardcodedText,MissingConstraints"
+            tools:layout_editor_absoluteX="282dp"
+            tools:layout_editor_absoluteY="655dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/next"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/white"
+            android:background="@drawable/paint_border"
+            android:contentDescription="next"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            app:srcCompat="?android:attr/textSelectHandleLeft"
+            tools:ignore="HardcodedText,MissingConstraints"
+            tools:layout_editor_absoluteY="655dp" />
+
+        <SeekBar
+            android:id="@+id/size"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:max="50"
+            android:min="1"
+            android:progress="25"
+            android:backgroundTint="@color/black"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="30dp"
+            tools:ignore="UnusedAttribute" />
+        <SeekBar
+        android:id="@+id/transparency"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:max="50"
+        android:min="1"
+        android:progress="25"
+        android:backgroundTint="@color/black"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="5dp"
+        tools:ignore="UnusedAttribute" />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
