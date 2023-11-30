@@ -7,20 +7,29 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class DrawView extends View {
     private Paint mPaint;
     private Path mPath;
-    @SuppressLint("RestrictedApi")
+    private float mStrokeWidth;
     public DrawView(Context context) {
         super(context);
         init();
     }
 
+    public DrawView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public DrawView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
     private void init(){
-        //  画笔，画布设置
+        //  初始化画笔，画布设置
         mPaint = new Paint();
         mPaint.setColor(0xFF000000);
         mPaint.setAntiAlias(true);
@@ -28,9 +37,15 @@ public class DrawView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeWidth(12);
+        mStrokeWidth=10;
+        //  初始化路径
         mPath = new Path();
     }
 
+    public void setStrokeWidth(float strokeWidth) {
+        mStrokeWidth = strokeWidth;
+        mPaint.setStrokeWidth(mStrokeWidth);
+    }
 
     @Override
     //  重写dnDraw
@@ -86,6 +101,5 @@ public class DrawView extends View {
         return true;
     }
 
-    
 
 }

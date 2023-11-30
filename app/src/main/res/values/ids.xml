@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="drawingview" type="id">drawingview</item>
+    <item name="drawview" type="id">drawview</item>
 </resources>
