@@ -1,7 +1,7 @@
 package com.AndroidStudio.kkk1;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity2 extends AppCompatActivity {
     private DrawView mDrawingView;
-    private Button mColorButton;
-    private int mColor = Color.BLACK;
 
     @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
@@ -22,11 +20,17 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        mDrawingView = findViewById(R.id.drawview);
+        mDrawingView = findViewById(R.id.drawView);
         SeekBar sizeSeekBar = findViewById(R.id.size);
         SeekBar transparencySeekBar = findViewById(R.id.transparency);
-        mColorButton = findViewById(R.id.color);
 
+        Button backActButton = findViewById(R.id.backActivity);
+        backActButton.setOnClickListener(view -> {
+            //创建一个intent指向主页面mainActivity
+            Intent backIntent = new Intent(MainActivity2.this, MainActivity.class);
+            //启动主页面
+            startActivity(backIntent);
+        });
 
         Button paintButton = findViewById(R.id.paint);
         paintButton.setOnClickListener((View v) -> {
@@ -65,8 +69,6 @@ public class MainActivity2 extends AppCompatActivity {
             // 实现恢复功能的代码
         });
 
-
-
         //设置画笔粗细的代码
         sizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -87,7 +89,6 @@ public class MainActivity2 extends AppCompatActivity {
                 // 当停止拖动SeekBar时，不需要执行任何操作
                 }
         });
-
 
         //设置画笔透明度的代码
         transparencySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -123,7 +124,6 @@ public class MainActivity2 extends AppCompatActivity {
             // 设置DrawingView的宽高
             drawingView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
     }
-
 
 
 }

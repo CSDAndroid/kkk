@@ -23,22 +23,13 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/paint"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/paint_border"
-                android:contentDescription="paint"
-                app:srcCompat="@drawable/pencil"
-                tools:ignore="HardcodedText" />
-
-            <ImageButton
-                android:id="@+id/eraser"
+                android:id="@+id/backActivity"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
-                app:srcCompat="@drawable/ic_menu_slideshow"
+                app:srcCompat="@android:drawable/ic_menu_revert"
                 android:background="@drawable/paint_border"
-                android:contentDescription="eraser"
+                android:contentDescription="backActivity"
                 tools:ignore="HardcodedText" />
 
             <ImageButton
@@ -46,7 +37,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
-                app:srcCompat="@drawable/ic_menu_slideshow"
+                app:srcCompat="@android:drawable/ic_menu_delete"
                 android:background="@drawable/paint_border"
                 android:contentDescription="clear"
                 tools:ignore="HardcodedText" />
@@ -59,7 +50,26 @@
                 android:layout_marginBottom="4dp"
                 android:background="@drawable/paint_border"
                 android:contentDescription="save"
-                app:srcCompat="@android:drawable/ic_media_rew"
+                app:srcCompat="@android:drawable/ic_menu_camera"
+                tools:ignore="HardcodedText" />
+
+            <ImageButton
+                android:id="@+id/eraser"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+                android:background="@drawable/paint_border"
+                android:contentDescription="eraser"
+                tools:ignore="HardcodedText" />
+
+            <ImageButton
+                android:id="@+id/paint"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/paint_border"
+                android:contentDescription="paint"
+                app:srcCompat="@android:drawable/ic_menu_edit"
                 tools:ignore="HardcodedText" />
 
             <ImageButton
@@ -67,10 +77,8 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="4dp"
                 android:background="@drawable/paint_border"
                 android:contentDescription="color"
-                app:srcCompat="@android:drawable/ic_media_rew"
                 tools:ignore="HardcodedText" />
 
 

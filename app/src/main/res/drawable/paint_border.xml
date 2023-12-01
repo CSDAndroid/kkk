@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:shape="oval"
     tools:ignore="MissingDefaultResource">
-    <stroke android:color="@color/black" android:width="3dp" />
+    <stroke android:color="#777777"
+        android:width="2dp" />
     <corners android:radius="10dp" />
 </shape>
