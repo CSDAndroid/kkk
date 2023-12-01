@@ -24,14 +24,13 @@ public class MainActivity2 extends AppCompatActivity {
         SeekBar sizeSeekBar = findViewById(R.id.size);
         SeekBar transparencySeekBar = findViewById(R.id.transparency);
 
-        Button backActButton = findViewById(R.id.backActivity);
+        ImageButton backActButton = findViewById(R.id.backActivity);
         backActButton.setOnClickListener(view -> {
             //创建一个intent指向主页面mainActivity
             Intent backIntent = new Intent(MainActivity2.this, MainActivity.class);
             //启动主页面
             startActivity(backIntent);
         });
-        DrawView mDrawingView = findViewById(R.id.drawingview);
 
         ImageButton paintButton = findViewById(R.id.paint);
         paintButton.setOnClickListener((View v) -> {
@@ -56,13 +55,13 @@ public class MainActivity2 extends AppCompatActivity {
             // 实现保存功能的代码
         });
 
-        Button backButton = findViewById(R.id.back);
+        ImageButton backButton = findViewById(R.id.back);
         backButton.setOnClickListener((View v) -> {
             // 实现撤回功能的代码
         });
 
 
-        Button nextButton = findViewById(R.id.next);
+        ImageButton nextButton = findViewById(R.id.next);
         nextButton.setOnClickListener((View v) -> {
             // 实现恢复功能的代码
         });

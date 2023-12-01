@@ -92,7 +92,6 @@
 
             <com.AndroidStudio.kkk1.DrawView
                 android:id="@+id/drawView"
-                android:id="@+id/drawingview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"

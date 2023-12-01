@@ -1,6 +1,5 @@
 package com.AndroidStudio.kkk1;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -14,23 +13,20 @@ import android.view.View;
 public class DrawView extends View {
     private Paint mPaint;
     private Path mPath;
-
     private float mStrokeWidth;
     public DrawView(Context context) {
-        super(context);
-        init();
+        this(context, null);
+
     }
 
     public DrawView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
+        this(context, attrs, 0);
     }
 
-    public DrawView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    public DrawView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
         init();
     }
-
 
     private void init(){
         //  初始化画笔，画布设置
@@ -100,7 +96,7 @@ public class DrawView extends View {
         }
 
         // 触发重绘
-        if (event.getAction() != MotionEvent.ACTION_UP) {
+        if (event.getAction() != MotionEvent.ACTION_UP && event.getAction() != MotionEvent.ACTION_POINTER_UP) {
             invalidate();
         }
         return true;
