@@ -11,8 +11,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button add=findViewById(R.id.add);
-        Button delete=findViewById(R.id.delete);
+        Button add = findViewById(R.id.add);
+        Button delete = findViewById(R.id.delete);
 
         add.setOnClickListener(view -> {
             //add按钮被点击之后执行内容

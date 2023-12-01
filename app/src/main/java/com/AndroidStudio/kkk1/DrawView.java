@@ -14,6 +14,7 @@ import android.view.View;
 public class DrawView extends View {
     private Paint mPaint;
     private Path mPath;
+
     private float mStrokeWidth;
     public DrawView(Context context) {
         super(context);
@@ -21,12 +22,15 @@ public class DrawView extends View {
     }
 
     public DrawView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init();
     }
 
-    public DrawView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+    public DrawView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
     }
+
 
     private void init(){
         //  初始化画笔，画布设置
@@ -74,7 +78,6 @@ public class DrawView extends View {
         invalidate();
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     //  监听路径
     public boolean onTouchEvent(MotionEvent event) {
@@ -97,7 +100,9 @@ public class DrawView extends View {
         }
 
         // 触发重绘
-        invalidate();
+        if (event.getAction() != MotionEvent.ACTION_UP) {
+            invalidate();
+        }
         return true;
     }
 

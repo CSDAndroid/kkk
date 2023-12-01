@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -14,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity2 extends AppCompatActivity {
     private DrawView mDrawingView;
 
-    @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,29 +31,27 @@ public class MainActivity2 extends AppCompatActivity {
             //启动主页面
             startActivity(backIntent);
         });
+        DrawView mDrawingView = findViewById(R.id.drawingview);
 
-        Button paintButton = findViewById(R.id.paint);
+        ImageButton paintButton = findViewById(R.id.paint);
         paintButton.setOnClickListener((View v) -> {
             // 实现画笔功能的代码
             startDrawing();
         });
 
-        @SuppressLint("WrongViewCast")
-        Button eraserButton = findViewById(R.id.eraser);
+        ImageButton eraserButton = findViewById(R.id.eraser);
         eraserButton.setOnClickListener((View v) -> {
             // 实现擦除功能的代码
             mDrawingView.setErasing(true);
         });
 
-        @SuppressLint("WrongViewCast")
-        Button clearButton = findViewById(R.id.clear);
+        ImageButton clearButton = findViewById(R.id.clear);
         clearButton.setOnClickListener((View v) -> {
             //  实现清空功能的代码
             mDrawingView.clearCanvas();
         });
 
-        @SuppressLint("WrongViewCast")
-        Button saveButton = findViewById(R.id.save);
+        ImageButton saveButton = findViewById(R.id.save);
         saveButton.setOnClickListener((View v) -> {
             // 实现保存功能的代码
         });
