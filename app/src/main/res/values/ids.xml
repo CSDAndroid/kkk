@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="drawView" type="id"></item>
+    <item name="itemImage" type="id"></item>
+    <item name="itemText" type="id"></item>
 </resources>

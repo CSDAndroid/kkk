@@ -1,20 +1,23 @@
 package com.AndroidStudio.kkk1;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity2 extends AppCompatActivity {
     private DrawView mDrawingView;
 
-    @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +27,7 @@ public class MainActivity2 extends AppCompatActivity {
         SeekBar sizeSeekBar = findViewById(R.id.size);
         SeekBar transparencySeekBar = findViewById(R.id.transparency);
 
-        Button backActButton = findViewById(R.id.backActivity);
+        ImageButton backActButton = findViewById(R.id.backActivity);
         backActButton.setOnClickListener(view -> {
             //创建一个intent指向主页面mainActivity
             Intent backIntent = new Intent(MainActivity2.this, MainActivity.class);
@@ -32,39 +35,37 @@ public class MainActivity2 extends AppCompatActivity {
             startActivity(backIntent);
         });
 
-        Button paintButton = findViewById(R.id.paint);
+        ImageButton paintButton = findViewById(R.id.paint);
         paintButton.setOnClickListener((View v) -> {
             // 实现画笔功能的代码
             startDrawing();
         });
 
-        @SuppressLint("WrongViewCast")
-        Button eraserButton = findViewById(R.id.eraser);
+        ImageButton eraserButton = findViewById(R.id.eraser);
         eraserButton.setOnClickListener((View v) -> {
             // 实现擦除功能的代码
             mDrawingView.setErasing(true);
         });
 
-        @SuppressLint("WrongViewCast")
-        Button clearButton = findViewById(R.id.clear);
+        ImageButton clearButton = findViewById(R.id.clear);
         clearButton.setOnClickListener((View v) -> {
             //  实现清空功能的代码
             mDrawingView.clearCanvas();
         });
 
         @SuppressLint("WrongViewCast")
-        Button saveButton = findViewById(R.id.save);
+        ImageButton saveButton = findViewById(R.id.save);
         saveButton.setOnClickListener((View v) -> {
             // 实现保存功能的代码
         });
 
-        Button backButton = findViewById(R.id.back);
+        ImageButton backButton = findViewById(R.id.back);
         backButton.setOnClickListener((View v) -> {
             // 实现撤回功能的代码
         });
 
 
-        Button nextButton = findViewById(R.id.next);
+        ImageButton nextButton = findViewById(R.id.next);
         nextButton.setOnClickListener((View v) -> {
             // 实现恢复功能的代码
         });
@@ -112,7 +113,26 @@ public class MainActivity2 extends AppCompatActivity {
         });
     }
 
+    //SQLite
+    class myHelper extends SQLiteOpenHelper{
 
+        //构造器，其中参数：上下文，数据库文件名称，结果集工厂，版本号，定义数据库
+        public myHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+            super(context, name, factory, version);
+        }
+
+        //数据库初始化的时候用于创建表或视图文件
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+
+        }
+
+        //升级方法
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        }
+    }
     //   画笔功能自定义函数
     private void startDrawing() {
             // 获取画布控件

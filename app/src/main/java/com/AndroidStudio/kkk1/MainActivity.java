@@ -11,6 +11,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MyDbHelper dbHelper = new MyDbHelper(MainActivity.this,"model.db",null,1);
+
+
+
         Button add=findViewById(R.id.add);
         Button delete=findViewById(R.id.delete);
 

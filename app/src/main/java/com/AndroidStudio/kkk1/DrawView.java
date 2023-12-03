@@ -1,6 +1,5 @@
 package com.AndroidStudio.kkk1;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -11,13 +10,15 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 public class DrawView extends View {
     private Paint mPaint;
     private Path mPath;
     private float mStrokeWidth;
     public DrawView(Context context) {
-        super(context);
-        init();
+        this(context,null);
+
     }
 
     public DrawView(Context context, AttributeSet attrs) {
@@ -26,6 +27,7 @@ public class DrawView extends View {
 
     public DrawView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init();
     }
 
     private void init(){
@@ -49,7 +51,7 @@ public class DrawView extends View {
 
     @Override
     //  重写dnDraw
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawPath(mPath, mPaint);
     }
@@ -74,7 +76,6 @@ public class DrawView extends View {
         invalidate();
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     //  监听路径
     public boolean onTouchEvent(MotionEvent event) {
@@ -97,7 +98,9 @@ public class DrawView extends View {
         }
 
         // 触发重绘
-        invalidate();
+        if (event.getAction() != MotionEvent.ACTION_UP && event.getAction() != MotionEvent.ACTION_POINTER_UP){
+            invalidate();
+        }
         return true;
     }
 

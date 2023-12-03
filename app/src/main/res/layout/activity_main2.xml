@@ -10,79 +10,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/backActivity"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                app:srcCompat="@android:drawable/ic_menu_revert"
-                android:background="@drawable/paint_border"
-                android:contentDescription="backActivity"
-                tools:ignore="HardcodedText" />
-
-            <ImageButton
-                android:id="@+id/clear"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                app:srcCompat="@android:drawable/ic_menu_delete"
-                android:background="@drawable/paint_border"
-                android:contentDescription="clear"
-                tools:ignore="HardcodedText" />
-
-            <ImageButton
-                android:id="@+id/save"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="4dp"
-                android:background="@drawable/paint_border"
-                android:contentDescription="save"
-                app:srcCompat="@android:drawable/ic_menu_camera"
-                tools:ignore="HardcodedText" />
-
-            <ImageButton
-                android:id="@+id/eraser"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
-                android:background="@drawable/paint_border"
-                android:contentDescription="eraser"
-                tools:ignore="HardcodedText" />
-
-            <ImageButton
-                android:id="@+id/paint"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/paint_border"
-                android:contentDescription="paint"
-                app:srcCompat="@android:drawable/ic_menu_edit"
-                tools:ignore="HardcodedText" />
-
-            <ImageButton
-                android:id="@+id/color"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/paint_border"
-                android:contentDescription="color"
-                tools:ignore="HardcodedText" />
-
-
-        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/FrameDrawView"
@@ -102,7 +29,100 @@
 
         </FrameLayout>
 
-    </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/backActivity"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/paint_border"
+            android:backgroundTint="@color/white"
+            android:contentDescription="backActivity"
+            app:srcCompat="@android:drawable/ic_menu_revert"
+            tools:ignore="HardcodedText,MissingConstraints"
+            tools:layout_editor_absoluteX="282dp"
+            tools:layout_editor_absoluteY="655dp" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/clear"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/white"
+            app:srcCompat="@drawable/clear"
+            android:background="@drawable/paint_border"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@id/save"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            tools:ignore="HardcodedText,MissingConstraints"
+            android:contentDescription="clear"
+            tools:layout_editor_absoluteX="282dp"
+            tools:layout_editor_absoluteY="655dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/save"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/white"
+            app:srcCompat="@drawable/download"
+            android:background="@drawable/paint_border"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@id/eraser"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            tools:ignore="HardcodedText,MissingConstraints"
+            android:contentDescription="save"
+            tools:layout_editor_absoluteX="282dp"
+            tools:layout_editor_absoluteY="655dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/eraser"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/white"
+            app:srcCompat="@drawable/eraser"
+            android:background="@drawable/paint_border"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@id/paint"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            tools:ignore="HardcodedText,MissingConstraints"
+            android:contentDescription="eraser"
+            tools:layout_editor_absoluteX="282dp"
+            tools:layout_editor_absoluteY="655dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/paint"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/white"
+            app:srcCompat="@drawable/pencil"
+            android:background="@drawable/paint_border"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@id/color"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            tools:ignore="HardcodedText,MissingConstraints"
+            android:contentDescription="paint"
+            tools:layout_editor_absoluteX="282dp"
+            tools:layout_editor_absoluteY="655dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/color"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/color"
+            android:backgroundTint="@color/white"
+            android:background="@drawable/paint_border"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            tools:ignore="HardcodedText,MissingConstraints"
+            android:contentDescription="color"
+            tools:layout_editor_absoluteX="282dp"
+            tools:layout_editor_absoluteY="655dp" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

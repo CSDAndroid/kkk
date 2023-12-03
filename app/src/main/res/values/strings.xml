@@ -7,5 +7,6 @@
     <string name="paint"></string>
     <string name="edit"></string>
     <string name="clear"></string>
+    <string name="model"></string>
 
 </resources>
