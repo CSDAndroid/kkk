@@ -1,5 +1,6 @@
 package com.AndroidStudio.kkk1;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -14,19 +15,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyDbHelper extends SQLiteOpenHelper {
+    private static  final String DATABASE_NAME = "imageDb";
+    private  static final int DATABASE_VERSION = 1;
     private SQLiteDatabase db;
     //创建数据库和表
     public MyDbHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
         //super必须放第一列
         db = this.getWritableDatabase();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table model(id integer primary key autoincrement,text text)");
+        db.execSQL("create table model(id integer primary key autoincrement,image blob,text text)");
+    }
+    // 存储图像到数据库
+    public long saveImage(byte[] imageBytes) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("image", imageBytes);
+        long rowId = db.insert("images", null, values);
+        db.close();
+        return rowId;
     }
 
+    // 从数据库读取图像
+    @SuppressLint("Range")
+    public byte[] loadImage(long imageId) {
+        SQLiteDatabase db = getReadableDatabase();
+        String[] columns = {"image"};
+        String selection = "id=?";
+        String[] selectionArgs = {String.valueOf(imageId)};
+        Cursor cursor = db.query("images", columns, selection, selectionArgs, null, null, null);
+        byte[] imageBytes = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            imageBytes = cursor.getBlob(cursor.getColumnIndex("image"));
+            cursor.close();
+        }
+        db.close();
+        return imageBytes;
+    }
     //对model表的操作
     //添加数据
     public boolean insertCell(@NonNull Image image, Context text){
@@ -60,7 +88,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
         while (cursor.moveToNext()){
             Model model = new Model();
             model.setId(String.valueOf(cursor.getInt(0)));
-            //******   model.setImage(cursor.getBlob());
+            //*****************model.setImage(cursor.getBlob());
             model.setText(cursor.getString(2));
             list.add(model);
         }

@@ -1,5 +1,6 @@
 package com.AndroidStudio.kkk1;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -76,6 +77,7 @@ public class DrawView extends View {
         invalidate();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     //  监听路径
     public boolean onTouchEvent(MotionEvent event) {
@@ -98,7 +100,7 @@ public class DrawView extends View {
         }
 
         // 触发重绘
-        if (event.getAction() != MotionEvent.ACTION_UP && event.getAction() != MotionEvent.ACTION_POINTER_UP){
+        if (event.getAction() != MotionEvent.ACTION_UP && event.getAction() != MotionEvent.ACTION_POINTER_UP) {
             invalidate();
         }
         return true;

@@ -1,5 +1,6 @@
 package com.AndroidStudio.kkk1;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,7 @@ public class CellAdapter extends BaseAdapter {
     //layoutInflater用于将某个布局转换为view对象
     private LayoutInflater layoutInflater;
     //当创建adapter对象的时候需要list数据
-    public CellAdapter(List<Model> list, Context context){
+    public CellAdapter(Context context,List<Model> list){
         this.list = list;
         layoutInflater = LayoutInflater.from(context);
     }
@@ -36,6 +37,7 @@ public class CellAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
@@ -57,7 +59,7 @@ public class CellAdapter extends BaseAdapter {
     }
 
     //ViewHolder用于给item视图加载数据内容
-    class ViewHolder{
+    static class ViewHolder{
         ImageView t_image;
         TextView t_text;
         public ViewHolder(View view){

@@ -3,4 +3,5 @@
     <item name="drawView" type="id"></item>
     <item name="itemImage" type="id"></item>
     <item name="itemText" type="id"></item>
+    <item name="gridView" type="id"></item>
 </resources>
