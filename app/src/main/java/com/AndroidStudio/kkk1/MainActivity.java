@@ -14,7 +14,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private GridView gridView;
     private Button add;
-    private MyDbHelper myDbHelper;
     private CellAdapter cellAdapter;
     private List<Model> resultGrid;
 
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         if (resultGrid != null){
             resultGrid.clear();
         }
-        myDbHelper = new MyDbHelper(MainActivity.this,"model.db",null,1);
+        MyDbHelper myDbHelper = new MyDbHelper(MainActivity.this, "model.db", null, 1);
         resultGrid = myDbHelper.query();
         cellAdapter = new CellAdapter(MainActivity.this,resultGrid);
         gridView.setAdapter(cellAdapter);

@@ -1,11 +1,9 @@
 package com.AndroidStudio.kkk1;
 
-import android.media.Image;
-
 public class Model {
 
     private String id;
-    private Image myImage;
+    private byte[] myImage;
     private String text;
 
     public String getId() {
@@ -15,11 +13,11 @@ public class Model {
     public void setId(String id) {
         this.id = id;
     }
-    public Image getImage() {
+    public byte[] getImage() {
         return myImage;
     }
 
-    public void setImage(Image image) {
+    public void setImage(byte[] image) {
         this.myImage = image;
     }
 

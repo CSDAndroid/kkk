@@ -12,9 +12,9 @@ import android.widget.TextView;
 import java.util.List;
 
 public class CellAdapter extends BaseAdapter {
-    private List<Model> list;
+    private final List<Model> list;
     //layoutInflater用于将某个布局转换为view对象
-    private LayoutInflater layoutInflater;
+    private final LayoutInflater layoutInflater;
     //当创建adapter对象的时候需要list数据
     public CellAdapter(Context context,List<Model> list){
         this.list = list;
@@ -52,7 +52,7 @@ public class CellAdapter extends BaseAdapter {
 
         Model model = (Model) getItem(position);
         // 将数据库中的内容加载到相应控件上
-        //    *****   viewHolder.t_image.setImage(model.getImage());
+        //viewHolder.t_image.setImage(model.getImage());
         viewHolder.t_text.setText(model.getText());
 
         return convertView;

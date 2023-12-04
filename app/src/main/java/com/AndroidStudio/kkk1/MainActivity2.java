@@ -1,14 +1,11 @@
 package com.AndroidStudio.kkk1;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -50,7 +47,7 @@ public class MainActivity2 extends AppCompatActivity {
 
         paintButton.setOnClickListener((View v) -> {
             // 实现画笔功能的代码
-            startDrawing();
+            init();
         });
 
         eraserButton.setOnClickListener((View v) -> {
@@ -106,7 +103,8 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // 根据SeekBar的进度设置画笔的透明度
-                drawView.setAlpha(progress);
+                int alpha = progress;
+                drawView.setPenAlpha(alpha);
             }
 
             @Override
@@ -142,17 +140,6 @@ public class MainActivity2 extends AppCompatActivity {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         }
-    }
-    //   画笔功能自定义函数
-    private void startDrawing() {
-            // 获取画布控件
-            FrameLayout frameDrawView = findViewById(R.id.FrameDrawView);
-            // 创建一个DrawingView，继承自View
-            DrawView drawingView = new DrawView(this);
-            // 将DrawingView添加到画布上
-            frameDrawView.addView(drawingView);
-            // 设置DrawingView的宽高
-            drawingView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
     }
 
 

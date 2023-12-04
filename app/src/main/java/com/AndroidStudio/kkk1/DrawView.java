@@ -2,7 +2,9 @@ package com.AndroidStudio.kkk1;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -13,10 +15,15 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
+
 public class DrawView extends View {
-    private Paint mPaint;
-    private Path mPath;
-    private float mStrokeWidth;
+    public Paint mPaint;
+    public Path mPath;
+    public float mStrokeWidth;
+    private ArrayList<Path> paths;
+    private  int paintColor;
+    public int penAlpha = 255;
     public DrawView(Context context) {
         this(context,null);
 
@@ -33,28 +40,28 @@ public class DrawView extends View {
 
     private void init(){
         //  初始化画笔，画布设置
+        //  初始化路径
+        mPath = new Path();
         mPaint = new Paint();
-        mPaint.setColor(0xFF000000);
+        mPaint.setColor(Color.BLACK);
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
-        mPaint.setStrokeWidth(12);
-        mStrokeWidth=10;
-        //  初始化路径
-        mPath = new Path();
-    }
-
-    public void setStrokeWidth(float strokeWidth) {
-        mStrokeWidth = strokeWidth;
         mPaint.setStrokeWidth(mStrokeWidth);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
+        mPaint.setAlpha(penAlpha);
+        paths = new ArrayList<>();
     }
 
     @Override
     //  重写dnDraw
     protected void onDraw(@NonNull Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.drawPath(mPath, mPaint);
+        for (Path path : paths){
+            canvas.drawPath(path,mPaint);
+        }
+        mPaint.setAlpha(penAlpha);
+        canvas.drawPath(mPath,mPaint);
     }
 
     public void setErasing(boolean isErasing) {
@@ -71,6 +78,7 @@ public class DrawView extends View {
     public void clearCanvas() {
         //  清空按钮功能
         // 清空路径
+        paths.clear();
         mPath.reset();
 
         // 触发重绘
@@ -91,11 +99,15 @@ public class DrawView extends View {
                 break;
             case MotionEvent.ACTION_MOVE:
                 // 手指移动时，连接路径
+                mPaint.setStrokeWidth(mStrokeWidth);
                 mPath.lineTo(x, y);
                 break;
             case MotionEvent.ACTION_UP:
-                // 手指抬起时，重置路径
-                mPath.reset();
+                // 手指抬起时，添加路径
+                paths.add(mPath);
+                mPath = new Path();
+                mPaint.setAlpha(penAlpha);
+                mPaint.setStrokeWidth(mStrokeWidth);
                 break;
         }
 
@@ -106,5 +118,19 @@ public class DrawView extends View {
         return true;
     }
 
+    protected void onSizeChanged(int w, int h, int oldw,int oldh){
+        super.onSizeChanged(w,h,oldw,oldh);
+        Bitmap canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas drawCanvas = new Canvas(canvasBitmap);
+    }
 
+    public void setStrokeWidth(float strokeWidth) {
+        mStrokeWidth = strokeWidth;
+        mPaint.setStrokeWidth(mStrokeWidth);
+    }
+
+
+    public void setPenAlpha(int alpha) {
+        penAlpha = alpha;
+    }
 }
