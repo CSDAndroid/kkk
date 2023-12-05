@@ -7,8 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,11 +23,13 @@ public class DrawView extends View {
     private ArrayList<Path> paths;
     private ArrayList<Float> strokeWidths;
     private ArrayList<Integer> alphas;
+    private ArrayList<Integer> paintColors;
     private Stack<Path> undonePaths;
     private Stack<Float> undoneStrokeWidths;
     private Stack<Integer> undoneAlphas;
+    private Stack<Integer> undonePaintColors;
     private boolean isEraser = false;
-    private int paintColor;
+    private int mPaintColor = Color.BLACK;
     private int mAlpha = 255;
     public DrawView(Context context) {
         this(context,null);
@@ -47,19 +47,21 @@ public class DrawView extends View {
         paths = new ArrayList<>();
         strokeWidths = new ArrayList<>();
         alphas = new ArrayList<>();
+        paintColors = new ArrayList<>();
         undonePaths = new Stack<>();
         undoneStrokeWidths = new Stack<>();
         undoneAlphas = new Stack<>();
+        undonePaintColors = new Stack<>();
         mPaint = new Paint();
         mPath = new Path();
-        mPaint = new android.graphics.Paint();
+        mPaint.setColor(mPaintColor);
+        mPaint.setStrokeWidth(mStrokeWidth);
+        mPaint.setAlpha(mAlpha);
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
-        mPaint.setStyle(android.graphics.Paint.Style.STROKE);
-        mPaint.setStrokeJoin(android.graphics.Paint.Join.ROUND);
-        mPaint.setStrokeWidth(mStrokeWidth);
-        mPaint.setStrokeCap(android.graphics.Paint.Cap.ROUND);
-        mPaint.setAlpha(mAlpha);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeJoin(Paint.Join.ROUND);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
     }
 
 
@@ -70,15 +72,10 @@ public class DrawView extends View {
             Path path = paths.get(i);
             float strokeWidth = strokeWidths.get(i);
             int alpha = alphas.get(i);
+            int paintColor = paintColors.get(i);
+            mPaint.setColor(paintColor);
             mPaint.setStrokeWidth(strokeWidth);
             mPaint.setAlpha(alpha);
-            if (isEraser) {
-                // 设置为橡皮擦模式
-                mPaint.setColor(Color.WHITE); // 使用白色作为橡皮擦颜色
-                mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR)); // 使用PorterDuff.Mode.CLEAR作为橡皮擦模式
-            } else {
-                mPaint.setXfermode(null); // 清除橡皮擦模式
-            }
             canvas.drawPath(path,mPaint);
         }
         canvas.drawPath(mPath,mPaint);
@@ -91,16 +88,18 @@ public class DrawView extends View {
         paths.clear();
         strokeWidths.clear();
         alphas.clear();
+        paintColors.clear();
         undonePaths.clear();
         undoneStrokeWidths.clear();
         undoneAlphas.clear();
+        undonePaintColors.clear();
         mPath.reset();
 
         // 触发重绘
         invalidate();
     }
 
-    //  画笔粗细功能
+    //  画笔监听路径
     @SuppressLint("ClickableViewAccessibility")
     @Override
     //  监听路径
@@ -114,6 +113,7 @@ public class DrawView extends View {
                 undonePaths.clear();
                 undoneStrokeWidths.clear();
                 undoneAlphas.clear();
+                undonePaintColors.clear();
                 mPath.reset();
                 mPath.moveTo(x,y);
                 break;
@@ -126,6 +126,7 @@ public class DrawView extends View {
                 paths.add(mPath);
                 strokeWidths.add(mStrokeWidth);
                 alphas.add(mAlpha);
+                paintColors.add(mPaintColor);
                 mPath = new Path();
                 break;
         }
@@ -146,18 +147,23 @@ public class DrawView extends View {
     //  设置橡皮擦模式
     public void setEraser(boolean isEraser){
         this.isEraser = isEraser;
+        if (isEraser){
+            mPaintColor = Color.WHITE;
+        }
     }
 
     //   设置画笔粗细功能
     public void setPathStrokeWidth(float strokeWidth){
         mStrokeWidth = strokeWidth;
-        mPaint.setStrokeWidth(strokeWidth);
     }
 
     //    设置画笔不透明度功能
     public void setPathAlpha(int alpha){
         mAlpha = alpha;
-        mPaint.setAlpha(alpha);
+    }
+
+    public void setPathPaintColor(int paintColor){
+        mPaintColor = paintColor;
     }
 
     //   撤回功能
