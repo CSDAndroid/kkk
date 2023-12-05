@@ -18,7 +18,7 @@ public class MainActivity2 extends AppCompatActivity {
     private ImageButton backActButton,paintButton,eraserButton,clearButton,backButton,nextButton,saveButton;
 
     //获取控件对象
-    private void  init(){
+    private void  initButton(){
         backActButton = findViewById(R.id.backActivity);
         paintButton = findViewById(R.id.paint);
         eraserButton = findViewById(R.id.eraser);
@@ -32,7 +32,7 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        init();
+        initButton();
 
         drawView = findViewById(R.id.drawView);
         SeekBar sizeSeekBar = findViewById(R.id.size);
@@ -47,12 +47,12 @@ public class MainActivity2 extends AppCompatActivity {
 
         paintButton.setOnClickListener((View v) -> {
             // 实现画笔功能的代码
-            init();
+            drawView.setEraser(false);
         });
 
         eraserButton.setOnClickListener((View v) -> {
             // 实现擦除功能的代码
-            drawView.setErasing(true);
+            drawView.setEraser(true);
         });
 
 
@@ -69,11 +69,13 @@ public class MainActivity2 extends AppCompatActivity {
 
         backButton.setOnClickListener((View v) -> {
             // 实现撤回功能的代码
+            drawView.undo();
         });
 
 
         nextButton.setOnClickListener((View v) -> {
             // 实现恢复功能的代码
+            drawView.redo();
         });
 
         //设置画笔粗细的代码
@@ -83,7 +85,8 @@ public class MainActivity2 extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // 根据SeekBar的进度设置画笔的粗细
                 float strokeWidth = (float) progress;
-                drawView.setStrokeWidth(strokeWidth);
+                drawView.setPathStrokeWidth(strokeWidth);
+
             }
 
             @Override
@@ -104,7 +107,7 @@ public class MainActivity2 extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // 根据SeekBar的进度设置画笔的透明度
                 int alpha = progress;
-                drawView.setPenAlpha(alpha);
+                drawView.setPathAlpha(alpha);
             }
 
             @Override
@@ -141,6 +144,4 @@ public class MainActivity2 extends AppCompatActivity {
 
         }
     }
-
-
 }

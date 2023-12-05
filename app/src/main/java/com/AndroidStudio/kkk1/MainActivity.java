@@ -13,7 +13,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private GridView gridView;
-    private Button add;
     private CellAdapter cellAdapter;
     private List<Model> resultGrid;
 
@@ -22,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gridView = findViewById(R.id.gridView);
-        add=findViewById(R.id.add);
+        Button add = findViewById(R.id.add);
 
         MyDbHelper dbHelper = new MyDbHelper(MainActivity.this,"model.db",null,1);
 

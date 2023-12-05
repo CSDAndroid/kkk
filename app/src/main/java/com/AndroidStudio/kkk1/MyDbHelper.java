@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
 
     //对model表的操作
     //添加数据
-    public boolean insertCell(@NonNull byte[] imageBytes, Context text){
+    public boolean insertCell(byte[] imageBytes, Context text){
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("image", imageBytes);
@@ -40,7 +39,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
         db.close();
         return i > 0;
     }
-    //删除数据,根据id进行删除
+    //删除数据,由id进行删除
     public Boolean deleteCell(String deleteId){
         int i = db.delete("model","id = ?",new String[]{deleteId});
         return i > 0;

@@ -52,7 +52,7 @@ public class CellAdapter extends BaseAdapter {
 
         Model model = (Model) getItem(position);
         // 将数据库中的内容加载到相应控件上
-        //viewHolder.t_image.setImage(model.getImage());
+        viewHolder.t_image.setImageBitmap(model.setImage(model.getImage()));
         viewHolder.t_text.setText(model.getText());
 
         return convertView;
