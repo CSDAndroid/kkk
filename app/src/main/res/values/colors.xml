@@ -8,4 +8,14 @@
     <color name="purple1">#4D0971</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
+    <color name="brown">#632525</color>
+    <color name="red">#E1281A</color>
+    <color name="orange">#F6710B</color>
+    <color name="yellow">#F6C515</color>
+    <color name="green">#4BCC1C</color>
+    <color name="skyBlue">#0DE1C8</color>
+    <color name="blue">#2175F3</color>
+    <color name="PrussiaBlue">#0510F4</color>
+    <color name="purple">#7613E6</color>
+    <color name="pink">#FF4CBD</color>
 </resources>

@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         myDbHelper = new MyDbHelper(MainActivity.this,"model.db",null,1);
 
+
         add.setOnClickListener(view -> {
             //add按钮被点击之后执行内容
             Intent intent = new Intent(MainActivity.this, MainActivity2.class);
@@ -53,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(fixIntent, 1);
             }
         });
-
-        // MainActivity
 
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override

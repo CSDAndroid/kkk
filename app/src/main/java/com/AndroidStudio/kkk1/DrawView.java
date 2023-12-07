@@ -152,7 +152,20 @@ public class DrawView extends FrameLayout {
         this.isEraser = isEraser;
         if (isEraser) {
             mPaintColor = Color.WHITE;
+        }else {
+            // 切换回普通模式，将画笔颜色设置为上一个颜色
+            if (!paintColors.isEmpty()) {
+                mPaintColor = paintColors.get(paintColors.size() - 1);
+            } else {
+                // 如果没有上一个颜色，则设置为默认颜色（如Color.BLACK）
+                mPaintColor = Color.BLACK;
+            }
         }
+        mPaint.setColor(mPaintColor);
+    }
+
+    public void setColor(int selectedColor){
+        mPaintColor = selectedColor;
     }
 
     //   设置画笔粗细功能
@@ -191,4 +204,10 @@ public class DrawView extends FrameLayout {
         }
     }
 
+    public Bitmap getBitmap() {
+        Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        draw(canvas);
+        return bitmap;
+    }
 }

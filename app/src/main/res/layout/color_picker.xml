@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_weight="1">
+
+
+    <ImageButton
+        android:id="@+id/black"
+        android:contentDescription="black"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@color/black"
+        android:layout_weight="1"
+        tools:ignore="HardcodedText,NestedWeights" />
+
+    <ImageButton
+        android:id="@+id/brown"
+        android:contentDescription="brown"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@color/brown"
+        android:layout_weight="1"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/red"
+        android:contentDescription="red"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@color/red"
+        android:layout_weight="1"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/orange"
+        android:contentDescription="orange"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@color/orange"
+        android:layout_weight="1"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/yellow"
+        android:contentDescription="yellow"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@color/yellow"
+        android:layout_weight="1"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/green"
+        android:contentDescription="green"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@color/green"
+        android:layout_weight="1"
+        tools:ignore="HardcodedText" />
+
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+        <ImageButton
+            android:id="@+id/white"
+            android:contentDescription="white"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@color/white"
+            android:layout_weight="1"
+            tools:ignore="HardcodedText" />
+
+        <ImageButton
+            android:id="@+id/skyBlue"
+            android:contentDescription="brown"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@color/skyBlue"
+            android:layout_weight="1"
+            tools:ignore="HardcodedText" />
+
+        <ImageButton
+            android:id="@+id/blue"
+            android:contentDescription="blue"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@color/blue"
+            android:layout_weight="1"
+            tools:ignore="HardcodedText" />
+        <ImageButton
+            android:id="@+id/Prussia"
+            android:contentDescription="Prussia"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@color/PrussiaBlue"
+            android:layout_weight="1"
+            tools:ignore="HardcodedText" />
+
+        <ImageButton
+            android:id="@+id/purple"
+            android:contentDescription="purple"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@color/purple"
+            android:layout_weight="1"
+            tools:ignore="HardcodedText" />
+
+        <ImageButton
+            android:id="@+id/pink"
+            android:contentDescription="pink"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@color/pink"
+            android:layout_weight="1"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -15,12 +16,6 @@
         android:theme="@style/Theme.MyApplication"
         tools:ignore="DataExtractionRules"
         tools:targetApi="31">
-        <activity
-            android:name=".TESTING"
-            android:exported="false" />
-        <activity
-            android:name=".Drawing"
-            android:exported="false" />
         <activity
             android:name=".MainActivity2"
             android:exported="false"

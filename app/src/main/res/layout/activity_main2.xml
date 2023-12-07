@@ -84,27 +84,11 @@
             app:srcCompat="@drawable/eraser"
             android:background="@drawable/paint_border"
             android:layout_alignParentTop="true"
-            android:layout_toStartOf="@id/paint"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="5dp"
-            tools:ignore="HardcodedText,MissingConstraints"
-            android:contentDescription="eraser"
-            tools:layout_editor_absoluteX="282dp"
-            tools:layout_editor_absoluteY="655dp" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/paint"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:backgroundTint="@color/white"
-            app:srcCompat="@drawable/pencil"
-            android:background="@drawable/paint_border"
-            android:layout_alignParentTop="true"
             android:layout_toStartOf="@id/color"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="5dp"
             tools:ignore="HardcodedText,MissingConstraints"
-            android:contentDescription="paint"
+            android:contentDescription="eraser"
             tools:layout_editor_absoluteX="282dp"
             tools:layout_editor_absoluteY="655dp" />
 
