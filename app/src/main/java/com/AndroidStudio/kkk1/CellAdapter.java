@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class CellAdapter extends BaseAdapter {
         ViewHolder viewHolder;
 
         if(convertView == null){
-            convertView = layoutInflater.inflate(R.layout.model,null,false);
+            convertView = layoutInflater.inflate(R.layout.model,parent,false);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }else {
@@ -52,8 +51,7 @@ public class CellAdapter extends BaseAdapter {
 
         Model model = (Model) getItem(position);
         // 将数据库中的内容加载到相应控件上
-        viewHolder.t_image.setImageBitmap(model.setImage(model.getImage()));
-        viewHolder.t_text.setText(model.getText());
+        viewHolder.t_image.setImageBitmap(model.getImage());
 
         return convertView;
     }
@@ -61,10 +59,8 @@ public class CellAdapter extends BaseAdapter {
     //ViewHolder用于给item视图加载数据内容
     static class ViewHolder{
         ImageView t_image;
-        TextView t_text;
         public ViewHolder(View view){
             t_image = view.findViewById(R.id.itemImage);
-            t_text = view.findViewById(R.id.itemText);
         }
 
     }

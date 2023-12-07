@@ -18,15 +18,9 @@
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:contentDescription="image"
-            app:srcCompat="@drawable/pencil"
+            android:src="@drawable/pencil"
             tools:ignore="HardcodedText,MissingConstraints"
             tools:src="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/itemText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:ignore="HardcodedText,MissingConstraints" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,8 @@
 package com.AndroidStudio.kkk1;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,21 +12,25 @@ import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private GridView gridView;
     private CellAdapter cellAdapter;
+    private MyDbHelper myDbHelper;
     private List<Model> resultGrid;
-
+    private int clickedItemID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         gridView = findViewById(R.id.gridView);
+        resultGrid = new ArrayList<>();
         Button add = findViewById(R.id.add);
 
-        MyDbHelper dbHelper = new MyDbHelper(MainActivity.this,"model.db",null,1);
+        myDbHelper = new MyDbHelper(MainActivity.this,"model.db",null,1);
 
         add.setOnClickListener(view -> {
             //add按钮被点击之后执行内容
@@ -38,7 +45,41 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // 当列表项被点击时对该项内容进行修改操作
+                // 获取点击的Model对象
+                Model clickedModel = resultGrid.get(position);
+                clickedItemID = clickedModel.getId();
+                Intent fixIntent = new Intent(MainActivity.this,MainActivity2.class);
+                fixIntent.putExtra("id",clickedItemID);
+                startActivityForResult(fixIntent, 1);
+            }
+        });
 
+        // MainActivity
+
+        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                // 获取长按的Model对象
+                Model longClickedModel = resultGrid.get(position);
+                long clickedItemId = longClickedModel.getId();
+
+                // 弹出确认删除的对话框
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("删除")
+                        .setMessage("是否删除该项作品？")
+                        .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 执行删除操作
+                                myDbHelper.deleteCell(String.valueOf(clickedItemId));
+                                // 更新主页列表
+                                initCell();
+                            }
+                        })
+                        .setNegativeButton("取消", null)
+                        .show();
+
+                return true;
             }
         });
 
@@ -48,11 +89,29 @@ public class MainActivity extends AppCompatActivity {
         if (resultGrid != null){
             resultGrid.clear();
         }
-        MyDbHelper myDbHelper = new MyDbHelper(MainActivity.this, "model.db", null, 1);
         resultGrid = myDbHelper.query();
         cellAdapter = new CellAdapter(MainActivity.this,resultGrid);
         gridView.setAdapter(cellAdapter);
 
+    }
+private void initCell(){
+    resultGrid.clear();
+    resultGrid.addAll(myDbHelper.query());
+    cellAdapter.notifyDataSetChanged();
+}
+    //  接收回传数据
+    protected void onActivityResult(int requestCode,int resultCode,Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK){
+            if (data != null){
+                DrawView returnedData = (DrawView) data.getSerializableExtra("image");
+                //  处理回传数据,将返回的图像数据插入数据库
+                myDbHelper.insertCell(returnedData);
+                // 更新gridView
+                init();
+
+            }
+        }
     }
 
 }

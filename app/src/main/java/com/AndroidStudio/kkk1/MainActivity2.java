@@ -1,20 +1,19 @@
 package com.AndroidStudio.kkk1;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity2 extends AppCompatActivity {
     private DrawView drawView;
+    private MyDbHelper myDbHelper;
+    private boolean addButton;
     private ImageButton backActButton,paintButton,eraserButton,clearButton,backButton,nextButton,saveButton;
 
     //获取控件对象
@@ -32,6 +31,7 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        myDbHelper = new MyDbHelper(MainActivity2.this,"model.db",null,1);
         initButton();
 
         drawView = findViewById(R.id.drawView);
@@ -40,7 +40,20 @@ public class MainActivity2 extends AppCompatActivity {
 
         backActButton.setOnClickListener(view -> {
             //创建一个intent指向主页面mainActivity
-            Intent backIntent = new Intent(MainActivity2.this, MainActivity.class);
+            Intent backIntent = new Intent(MainActivity2.this,MainActivity.class);
+            //  在Intent中添加回传的数据
+            int itemId = getIntent().getIntExtra("id", -1);
+            if (itemId != -1) {
+                // 存在有效的项ID，执行更新操作
+                myDbHelper.updateCell(String.valueOf(itemId), drawView);
+            } else {
+                // 无有效项ID，执行插入操作
+                myDbHelper.insertCell(drawView);
+            }
+            //  设置回传结果为Activity.RESULT_OK
+            setResult(Activity.RESULT_OK,backIntent);
+            //   关闭当前Activity
+            finish();
             //启动主页面
             startActivity(backIntent);
         });
@@ -123,25 +136,8 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
     }
-
-    //SQLite
-    class myHelper extends SQLiteOpenHelper{
-
-        //构造器，其中参数：上下文，数据库文件名称，结果集工厂，版本号，定义数据库
-        public myHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-            super(context, name, factory, version);
-        }
-
-        //数据库初始化的时候用于创建表或视图文件
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-
-        }
-
-        //升级方法
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        }
+    public Boolean judgeAdd(boolean addButton){
+        return addButton;
     }
+
 }

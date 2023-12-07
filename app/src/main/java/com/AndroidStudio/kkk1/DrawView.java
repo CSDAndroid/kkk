@@ -7,30 +7,33 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class DrawView extends View {
+public class DrawView extends FrameLayout {
+    private GLSurfaceView glSurfaceView;
     private Paint mPaint;
     private Path mPath;
     private float mStrokeWidth;
-    private ArrayList<Path> paths;
-    private ArrayList<Float> strokeWidths;
-    private ArrayList<Integer> alphas;
-    private ArrayList<Integer> paintColors;
-    private Stack<Path> undonePaths;
-    private Stack<Float> undoneStrokeWidths;
-    private Stack<Integer> undoneAlphas;
-    private Stack<Integer> undonePaintColors;
-    private boolean isEraser = false;
     private int mPaintColor = Color.BLACK;
     private int mAlpha = 255;
+    private final ArrayList<Path> paths;
+    private final ArrayList<Float> strokeWidths;
+    private final ArrayList<Integer> alphas;
+    private final ArrayList<Integer> paintColors;
+    private final Stack<Path> undonePaths;
+    private final Stack<Float> undoneStrokeWidths;
+    private final Stack<Integer> undoneAlphas;
+    private final Stack<Integer> undonePaintColors;
+    private boolean isEraser = false;
+
     public DrawView(Context context) {
         this(context,null);
 
@@ -147,7 +150,7 @@ public class DrawView extends View {
     //  设置橡皮擦模式
     public void setEraser(boolean isEraser){
         this.isEraser = isEraser;
-        if (isEraser){
+        if (isEraser) {
             mPaintColor = Color.WHITE;
         }
     }
@@ -172,6 +175,7 @@ public class DrawView extends View {
             undonePaths.push(paths.remove(paths.size()-1));
             undoneStrokeWidths.push(strokeWidths.remove(strokeWidths.size()-1));
             undoneAlphas.push(alphas.remove(alphas.size()-1));
+            undonePaintColors.push(paintColors.remove(paintColors.size()-1));
             invalidate();
         }
     }
@@ -182,7 +186,9 @@ public class DrawView extends View {
             paths.add(undonePaths.pop());
             strokeWidths.add(undoneStrokeWidths.pop());
             alphas.add(undoneAlphas.pop());
+            paintColors.add(undonePaintColors.pop());
             invalidate();
         }
     }
+
 }
