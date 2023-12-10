@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,6 +13,7 @@ import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,10 +51,13 @@ public class MainActivity extends AppCompatActivity {
                 Model clickedModel = resultGrid.get(position);
                 Intent fixIntent = new Intent(MainActivity.this,MainActivity2.class);
                 int clickedItemID = clickedModel.getId();
+                Bitmap clickedImageBitmap = clickedModel.getImage();
+                byte[] clickedImageBytes = convertBitmapToByteArray(clickedImageBitmap);
                 int clickedColor = clickedModel.getColor();
                 float clickedStrokeWidth = clickedModel.getStrokeWidth();
                 int clickedAlpha = clickedModel.getAlpha();
                 fixIntent.putExtra("id",clickedItemID);
+                fixIntent.putExtra("image",clickedImageBytes);
                 fixIntent.putExtra("color",clickedColor);
                 fixIntent.putExtra("strokeWidth", clickedStrokeWidth);
                 fixIntent.putExtra("alpha", clickedAlpha);
@@ -121,4 +126,9 @@ private void initCell(){
         }
     }
 
+    private byte[] convertBitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
+    }
 }

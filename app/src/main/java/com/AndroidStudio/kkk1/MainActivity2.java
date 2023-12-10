@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,8 +58,10 @@ public class MainActivity2 extends AppCompatActivity {
         if (imageBlobData != null) {
             // 将字节数组转换为Bitmap
             Bitmap imageBitmap = BitmapFactory.decodeByteArray(imageBlobData, 0, imageBlobData.length);
-            // 将Bitmap设置给DrawView
-            drawView.setBitmap(imageBitmap);
+            // 将位图数据适配回DrawView
+            if (imageBitmap != null) {
+                drawView.setBackground(new BitmapDrawable(getResources(), imageBitmap));
+            }
         }
         strokeWidth = intent.getFloatExtra("strokeWidth", 0);
         alpha = intent.getIntExtra("alpha", 255);
@@ -82,7 +85,7 @@ public class MainActivity2 extends AppCompatActivity {
             //创建一个intent指向主页面mainActivity
             Intent backIntent = new Intent(MainActivity2.this,MainActivity.class);
             // 将绘图数据转换为Bitmap
-            Bitmap bitmap = drawView.getBitmap();
+            Bitmap bitmap = drawView.savePathsToBitmap();
             // 将Bitmap转换为字节数组
             byte[] imageBytes = convertBitmapToByteArray(bitmap);
             backIntent.putExtra("image",imageBytes);
