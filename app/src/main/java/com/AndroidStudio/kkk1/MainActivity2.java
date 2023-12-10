@@ -3,16 +3,11 @@ package com.AndroidStudio.kkk1;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -21,14 +16,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 
 public class MainActivity2 extends AppCompatActivity {
     private DrawView drawView;
     private MyDbHelper myDbHelper;
     private int itemId;
+    private int alpha;
+    private int color;
+    private float strokeWidth;
     private ImageButton backActButton,eraserButton,clearButton,backButton,nextButton,saveButton,colorButton;
 
     //获取控件对象
@@ -47,26 +43,52 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         myDbHelper = new MyDbHelper(MainActivity2.this,"model.db",null,1);
-        // 获取传递的子项 ID
-        itemId = getIntent().getIntExtra("id",-1);
         initButton();
 
         drawView = findViewById(R.id.drawView);
         SeekBar sizeSeekBar = findViewById(R.id.size);
         SeekBar transparencySeekBar = findViewById(R.id.transparency);
 
+        Intent intent = this.getIntent();
+        // 获取传递的子项 ID
+        itemId = getIntent().getIntExtra("id",-1);
+        //如若点击项存在则将数据传递给DrawView和SeekBar
+        byte[] imageBlobData = intent.getByteArrayExtra("image");
+        if (imageBlobData != null) {
+            // 将字节数组转换为Bitmap
+            Bitmap imageBitmap = BitmapFactory.decodeByteArray(imageBlobData, 0, imageBlobData.length);
+            // 将Bitmap设置给DrawView
+            drawView.setBitmap(imageBitmap);
+        }
+        strokeWidth = intent.getFloatExtra("strokeWidth", 0);
+        alpha = intent.getIntExtra("alpha", 255);
+        color = intent.getIntExtra("color",0xFF000000);
+        transparencySeekBar.setProgress(alpha);
+        drawView.setPathAlpha(alpha);
+        sizeSeekBar.setProgress((int) strokeWidth);
+        drawView.setPathStrokeWidth(strokeWidth);
+        drawView.setPathColor(color);
+
         backActButton.setOnClickListener(view -> {
-            //创建一个intent指向主页面mainActivity
-            Intent backIntent = new Intent(MainActivity2.this,MainActivity.class);
             //  在Intent中添加回传的数据
             itemId = getIntent().getIntExtra("id", -1);
             if (itemId != -1) {
                 // 存在有效的项ID，执行更新操作
-                myDbHelper.updateCell(String.valueOf(itemId), drawView);
+                myDbHelper.updateCell(String.valueOf(itemId), drawView,strokeWidth,color,alpha);
             } else {
                 // 无有效项ID，执行插入操作
-                myDbHelper.insertCell(drawView);
+                myDbHelper.insertCell(drawView,strokeWidth,color,alpha);
             }
+            //创建一个intent指向主页面mainActivity
+            Intent backIntent = new Intent(MainActivity2.this,MainActivity.class);
+            // 将绘图数据转换为Bitmap
+            Bitmap bitmap = drawView.getBitmap();
+            // 将Bitmap转换为字节数组
+            byte[] imageBytes = convertBitmapToByteArray(bitmap);
+            backIntent.putExtra("image",imageBytes);
+            backIntent.putExtra("strokeWidth", strokeWidth);
+            backIntent.putExtra("alpha", alpha);
+            backIntent.putExtra("color", color);
             //  设置回传结果为Activity.RESULT_OK
             setResult(Activity.RESULT_OK,backIntent);
             //   关闭当前Activity
@@ -89,36 +111,7 @@ public class MainActivity2 extends AppCompatActivity {
 
         saveButton.setOnClickListener((View v) -> {
             // 实现保存功能的代码
-            Bitmap bitmap = drawView.getBitmap(); // 获取DrawView的位图
-            // 保存位图到设备的存储中
-            String filename = "draw_image.png";
-            File file = new File(getExternalFilesDir(null), filename);
-            FileOutputStream outputStream;
-            try {
-                outputStream = new FileOutputStream(file);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                outputStream.flush();
-                outputStream.close();
-
-                // 将图片添加到相册中
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.DISPLAY_NAME, filename);
-                values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
-                values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_DCIM);
-
-                ContentResolver contentResolver = getContentResolver();
-                Uri imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-                // 通知相册刷新
-                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                mediaScanIntent.setData(imageUri);
-                sendBroadcast(mediaScanIntent);
-
-                Toast.makeText(MainActivity2.this, "图像保存成功", Toast.LENGTH_SHORT).show();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(MainActivity2.this, "图像保存失败", Toast.LENGTH_SHORT).show();
-            }
+            drawView.saveImage();
 
         });
 
@@ -140,13 +133,7 @@ public class MainActivity2 extends AppCompatActivity {
             int[] selectedColors = {Color.BLACK,Color.rgb(99,37,37),Color.rgb(225,40,26),Color.rgb(246,113,11),Color.rgb(246,197,21),Color.rgb(75,204,28),
                     Color.rgb(13,225,200),Color.rgb(33,117,243),Color.rgb(5,16,244),Color.rgb(118,19,230),Color.rgb(255,76,189)};
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("选择颜色");
-            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            builder.setTitle("颜色");
             LayoutInflater inflater = getLayoutInflater();
             View dialogView = inflater.inflate(R.layout.color_picker, null);
             // 设置自定义视图的高度
@@ -160,7 +147,8 @@ public class MainActivity2 extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         // 执行其他操作，如根据选择的颜色进行处理
-                        drawView.setColor(selectedColors[position]);
+                        color = selectedColors[position];
+                        drawView.setPathColor(color);
                     }
                 });
             }
@@ -175,7 +163,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // 根据SeekBar的进度设置画笔的粗细
-                float strokeWidth = (float) progress;
+                strokeWidth = (float) progress;
                 drawView.setPathStrokeWidth(strokeWidth);
 
             }
@@ -197,7 +185,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // 根据SeekBar的进度设置画笔的透明度
-                int alpha = progress;
+                alpha = progress;
                 drawView.setPathAlpha(alpha);
             }
 
@@ -213,5 +201,12 @@ public class MainActivity2 extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private byte[] convertBitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
     }
 }

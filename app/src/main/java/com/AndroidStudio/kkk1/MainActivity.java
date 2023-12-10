@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     private CellAdapter cellAdapter;
     private MyDbHelper myDbHelper;
     private List<Model> resultGrid;
-    private int clickedItemID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +47,15 @@ public class MainActivity extends AppCompatActivity {
                 // 当列表项被点击时对该项内容进行修改操作
                 // 获取点击的Model对象
                 Model clickedModel = resultGrid.get(position);
-                clickedItemID = clickedModel.getId();
                 Intent fixIntent = new Intent(MainActivity.this,MainActivity2.class);
+                int clickedItemID = clickedModel.getId();
+                int clickedColor = clickedModel.getColor();
+                float clickedStrokeWidth = clickedModel.getStrokeWidth();
+                int clickedAlpha = clickedModel.getAlpha();
                 fixIntent.putExtra("id",clickedItemID);
+                fixIntent.putExtra("color",clickedColor);
+                fixIntent.putExtra("strokeWidth", clickedStrokeWidth);
+                fixIntent.putExtra("alpha", clickedAlpha);
                 startActivityForResult(fixIntent, 1);
             }
         });
@@ -104,8 +109,11 @@ private void initCell(){
         if (requestCode == 1 && resultCode == Activity.RESULT_OK){
             if (data != null){
                 DrawView returnedData = (DrawView) data.getSerializableExtra("image");
+                Float strokeWidth = data.getFloatExtra("strokeWidth",0);
+                int color = data.getIntExtra("color",0xFF000000);
+                int alpha = data.getIntExtra("alpha",255);
                 //  处理回传数据,将返回的图像数据插入数据库
-                myDbHelper.insertCell(returnedData);
+                myDbHelper.insertCell(returnedData,strokeWidth,color,alpha);
                 // 更新gridView
                 init();
 

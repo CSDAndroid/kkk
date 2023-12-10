@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">miniSAI</string>
     <string name="save"></string>
     <string name="delete"></string>
     <string name="back"></string>
@@ -8,5 +8,7 @@
     <string name="edit"></string>
     <string name="clear"></string>
     <string name="model"></string>
+    <string name="color"></string>
+    <string name="strokeWidth"></string>
 
 </resources>

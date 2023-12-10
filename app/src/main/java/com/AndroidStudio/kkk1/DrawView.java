@@ -1,24 +1,37 @@
 package com.AndroidStudio.kkk1;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.opengl.GLSurfaceView;
+import android.media.MediaScannerConnection;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Stack;
 
-public class DrawView extends FrameLayout {
-    private GLSurfaceView glSurfaceView;
+public class DrawView extends FrameLayout implements Serializable {
+    private Bitmap mBitmap;
+    private Canvas mCanvas;
     private Paint mPaint;
     private Path mPath;
     private float mStrokeWidth;
@@ -71,6 +84,8 @@ public class DrawView extends FrameLayout {
     @Override
     //  重写dnDraw
     protected void onDraw(@NonNull Canvas canvas) {
+        super.onDraw(canvas);
+        canvas.drawBitmap(mBitmap, 0, 0, null);
         for (int i = 0;i < paths.size();i ++){
             Path path = paths.get(i);
             float strokeWidth = strokeWidths.get(i);
@@ -143,28 +158,46 @@ public class DrawView extends FrameLayout {
 
     protected void onSizeChanged(int w, int h, int oldw,int oldh){
         super.onSizeChanged(w,h,oldw,oldh);
-        Bitmap canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        Canvas drawCanvas = new Canvas(canvasBitmap);
+        mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        mCanvas = new Canvas(mBitmap);
     }
+    public Bitmap savePathsToBitmap() {
+        Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawColor(Color.WHITE);
+        canvas.drawBitmap(mBitmap, 0, 0, null);
 
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setDither(true);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+
+        for (int i = 0; i < paths.size(); i++) {
+            Path path = paths.get(i);
+            float strokeWidth = strokeWidths.get(i);
+            int alpha = alphas.get(i);
+            int paintColor = paintColors.get(i);
+
+            paint.setColor(paintColor);
+            paint.setStrokeWidth(strokeWidth);
+            paint.setAlpha(alpha);
+            canvas.drawPath(path, paint);
+        }
+
+        return bitmap;
+    }
     //  设置橡皮擦模式
     public void setEraser(boolean isEraser){
         this.isEraser = isEraser;
         if (isEraser) {
             mPaintColor = Color.WHITE;
-        }else {
-            // 切换回普通模式，将画笔颜色设置为上一个颜色
-            if (!paintColors.isEmpty()) {
-                mPaintColor = paintColors.get(paintColors.size() - 1);
-            } else {
-                // 如果没有上一个颜色，则设置为默认颜色（如Color.BLACK）
-                mPaintColor = Color.BLACK;
-            }
         }
-        mPaint.setColor(mPaintColor);
     }
 
-    public void setColor(int selectedColor){
+
+    public void setPathColor(int selectedColor){
         mPaintColor = selectedColor;
     }
 
@@ -176,10 +209,6 @@ public class DrawView extends FrameLayout {
     //    设置画笔不透明度功能
     public void setPathAlpha(int alpha){
         mAlpha = alpha;
-    }
-
-    public void setPathPaintColor(int paintColor){
-        mPaintColor = paintColor;
     }
 
     //   撤回功能
@@ -209,5 +238,46 @@ public class DrawView extends FrameLayout {
         Canvas canvas = new Canvas(bitmap);
         draw(canvas);
         return bitmap;
+    }
+    public void setBitmap(Bitmap bitmap) {
+        mBitmap = bitmap;
+        mCanvas = new Canvas(mBitmap);
+        invalidate();
+    }
+    public void saveImage() {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "Drawing_" + timeStamp + ".png";
+
+        try {
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+            File directory = new File(path);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            File file = new File(directory, imageFileName);
+            OutputStream outputStream = new FileOutputStream(file);
+            Bitmap pathsBitmap = savePathsToBitmap();
+            pathsBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            outputStream.close();
+
+            // Add the image to the media store
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.TITLE, imageFileName);
+            values.put(MediaStore.Images.Media.DISPLAY_NAME, imageFileName);
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+            values.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
+            getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+            // Notify the media scanner to refresh
+            MediaScannerConnection.scanFile(getContext(), new String[]{file.getAbsolutePath()}, null, null);
+            Toast.makeText(getContext(), "保存成功", Toast.LENGTH_SHORT).show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Show save error message
+            // You can customize this part to display a dialog or toast
+            Toast.makeText(getContext(), "保存失败", Toast.LENGTH_SHORT).show();
+        }
     }
 }

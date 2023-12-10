@@ -1,17 +1,20 @@
 package com.AndroidStudio.kkk1;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
-import java.io.ByteArrayOutputStream;
 
 public class Model {
 
     private int id;
     private Bitmap image;
+    private int color;
+    private float strokeWidth;
+    private int alpha;
     public Model(){
         this.id = id;
         this.image = image;
+        this.color = color;
+        this.strokeWidth = strokeWidth;
+        this.alpha = alpha;
     }
     public int getId() {
         return id;
@@ -27,21 +30,22 @@ public class Model {
     public void setImage(Bitmap image) {
         this.image = image;
     }
-    public Bitmap byteToBitmap(byte[] bytes){
-        if (bytes != null && bytes.length > 0){
-            return BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-        }else {
-            return null;
-        }
+    public int getColor(){
+        return color;
     }
-    public byte[] getByteArray() {
-        if (image != null) {
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            return stream.toByteArray();
-        } else {
-            return null;
-        }
+    public void setColor(int color){
+        this.color = color;
     }
-
+    public float getStrokeWidth(){
+        return strokeWidth;
+    }
+    public void setStrokeWidth(float strokeWidth){
+        this.strokeWidth = strokeWidth;
+    }
+    public int getAlpha(){
+        return alpha;
+    }
+    public void setAlpha(int alpha){
+        this.alpha = alpha;
+    }
 }

@@ -17,15 +17,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyDbHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "model.db";
-    private static final int DATABASE_VERSION = 1;
     private static final String TABLE_NAME = "model";
     private static final String ID = "id";
     private static final String COLUMN_IMAGE = "image";
+    private static final String COLUMN_COLOR = "color";
+    private static final String COLUMN_STROKE_WIDTH = "strokeWidth";
+    private static final String COLUMN_ALPHA = "alpha";
     private final SQLiteDatabase db;
     //创建数据库和表
     public MyDbHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-        super(context,name, factory, 2);
+        super(context,name, factory, 6);
         //super必须放第一列
         db = this.getWritableDatabase();
     }
@@ -33,18 +34,25 @@ public class MyDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //  创建表结构
-        String createTableQuery = "CREATE TABLE " + TABLE_NAME + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_IMAGE + " BLOB)";
+        String createTableQuery = "CREATE TABLE " + TABLE_NAME + "(" +
+                ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_IMAGE + " BLOB, " +
+                COLUMN_COLOR + " INTEGER, " +
+                COLUMN_ALPHA + " INTEGER, " +
+                COLUMN_STROKE_WIDTH + " REAL)";
         db.execSQL(createTableQuery);
     }
 
     //对model表的操作
     //添加数据
-    public boolean insertCell(DrawView drawView){
+    public boolean insertCell(DrawView drawView, Float strokeWidth, int color, int alpha){
         Bitmap imageBitmap = convertDrawViewToBitmap(drawView);
         byte[] imageBytes = convertBitmapToByteArray(imageBitmap);
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_IMAGE, imageBytes);
-
+        contentValues.put(COLUMN_COLOR,color);
+        contentValues.put(COLUMN_ALPHA,alpha);
+        contentValues.put(COLUMN_STROKE_WIDTH,strokeWidth);
         long i = db.insert(TABLE_NAME,null,contentValues);
         db.close();
         return i > 0;
@@ -56,12 +64,15 @@ public class MyDbHelper extends SQLiteOpenHelper {
     }
 
     //更新数据
-    public Boolean updateCell(String updateId,DrawView updateDrawView){
+    public Boolean updateCell(String updateId,DrawView updateDrawView, Float strokeWidth, int color, int alpha){
         //将需要更新的内容存入contentValues
         ContentValues contentValues = new ContentValues();
         Bitmap imageBitmap = convertDrawViewToBitmap(updateDrawView);
         byte[] imageBytes = convertBitmapToByteArray(imageBitmap);
         contentValues.put(COLUMN_IMAGE, imageBytes);
+        contentValues.put(COLUMN_COLOR,color);
+        contentValues.put(COLUMN_ALPHA,alpha);
+        contentValues.put(COLUMN_STROKE_WIDTH,strokeWidth);
         int i = db.update(TABLE_NAME,contentValues,"id = ?",new String[]{updateId});
         return i > 0;
     }
@@ -70,13 +81,17 @@ public class MyDbHelper extends SQLiteOpenHelper {
     @SuppressLint("Range")
     public List<Model> query(){
         List<Model> list = new ArrayList<>();
-        Cursor cursor = db.query(TABLE_NAME,null,null,null,null,null,null,null);
+        String[] columns = {ID, COLUMN_IMAGE, COLUMN_COLOR, COLUMN_ALPHA, COLUMN_STROKE_WIDTH};
+        Cursor cursor = db.query(TABLE_NAME,columns,null,null,null,null,null,null);
         while (cursor.moveToNext()){
             Model model = new Model();
-            model.setId(Integer.valueOf(cursor.getInt(cursor.getColumnIndex(ID))));
+            model.setId(cursor.getInt(cursor.getColumnIndex(ID)));
             byte[] imageBytes = cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE));
             Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes,0, imageBytes.length);
             model.setImage(bitmap);
+            model.setColor(cursor.getInt(cursor.getColumnIndex(COLUMN_COLOR)));
+            model.setAlpha(cursor.getInt(cursor.getColumnIndex(COLUMN_ALPHA)));
+            model.setStrokeWidth(cursor.getFloat(cursor.getColumnIndex(COLUMN_STROKE_WIDTH)));
             list.add(model);
         }
         cursor.close();
@@ -85,11 +100,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // 判断旧版本和新版本，执行相应的升级逻辑
-        if (oldVersion < 2) {
-            // 如果旧版本小于2，执行添加 "image" 列的操作
-            db.execSQL("ALTER TABLE model ADD COLUMN image BLOB");
-        }
+
     }
 
     private Bitmap convertDrawViewToBitmap(DrawView drawView){
